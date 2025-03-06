@@ -2,6 +2,9 @@ package com.musicradar.app.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.musicradar.app.data.remote.AlbumApi
+import com.musicradar.app.data.remote.ArtistApi
+import com.musicradar.app.data.remote.TrackApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,5 +70,5 @@ object NetworkModule {
     fun provideTrackApi(retrofit: Retrofit): TrackApi {
         return retrofit.create(TrackApi::class.java)
     }
-
 }
+
