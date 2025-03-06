@@ -2,12 +2,16 @@ package com.musicradar.backend.service
 
 import com.musicradar.backend.model.Artist
 import com.musicradar.backend.repository.ArtistRepository
+import com.musicradar.backend.scraper.WikipediaScraperService
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import jakarta.persistence.EntityNotFoundException
 
 @Service
-class ArtistService(private val artistRepository: ArtistRepository) {
+class ArtistService(
+    private val artistRepository: ArtistRepository,
+    private val wikipediaScraperService: WikipediaScraperService
+) {
     
     fun getAllArtists(): List<Artist> {
         return artistRepository.findAll()
@@ -23,7 +27,9 @@ class ArtistService(private val artistRepository: ArtistRepository) {
     }
     
     fun createArtist(artist: Artist): Artist {
-        return artistRepository.save(artist)
+        // Tentar enriquecer os dados do artista com informações da Wikipedia
+        val enrichedArtist = wikipediaScraperService.enrichArtistWithScrapedData(artist)
+        return artistRepository.save(enrichedArtist)
     }
     
     fun updateArtist(id: Long, artistDetails: Artist): Artist {
@@ -42,5 +48,12 @@ class ArtistService(private val artistRepository: ArtistRepository) {
     fun deleteArtist(id: Long) {
         val artist = getArtistById(id)
         artistRepository.delete(artist)
+    }
+    
+    fun scrapeAndUpdateArtist(id: Long): Artist {
+        val artist = getArtistById(id)
+        val enrichedArtist = wikipediaScraperService.enrichArtistWithScrapedData(artist)
+        enrichedArtist.updatedAt = LocalDateTime.now()
+        return artistRepository.save(enrichedArtist)
     }
 }

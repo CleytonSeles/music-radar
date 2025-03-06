@@ -26,6 +26,11 @@ class ArtistController(private val artistService: ArtistService) {
         return ResponseEntity.ok(artistService.searchArtistsByName(name))
     }
     
+    @GetMapping("/{id}/enrich")
+    fun enrichArtistData(@PathVariable id: Long): ResponseEntity<Artist> {
+        return ResponseEntity.ok(artistService.scrapeAndUpdateArtist(id))
+    }
+    
     @PostMapping
     fun createArtist(@RequestBody artistDTO: ArtistDTO): ResponseEntity<Artist> {
         val artist = Artist(
@@ -64,3 +69,4 @@ class ArtistController(private val artistService: ArtistService) {
         return ResponseEntity.noContent().build()
     }
 }
+
