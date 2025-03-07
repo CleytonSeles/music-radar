@@ -24,7 +24,8 @@ class AlbumsViewModel @Inject constructor(
         loadAlbums()
     }
 
-    fun loadAlbums() {
+    // Alterado para private - agora só pode ser chamado dentro desta classe
+    private fun loadAlbums() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
@@ -46,6 +47,11 @@ class AlbumsViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    // Adicionando uma função pública para atualizar os dados
+    fun refresh() {
+        loadAlbums()
     }
 
     fun searchAlbums(query: String) {
@@ -83,3 +89,4 @@ data class AlbumsUiState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
+

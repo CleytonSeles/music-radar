@@ -28,6 +28,7 @@ class TrackDetailViewModel @Inject constructor(
         loadTrack()
     }
 
+    // Alterado para private
     private fun loadTrack() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
@@ -52,6 +53,7 @@ class TrackDetailViewModel @Inject constructor(
         }
     }
 
+    // Mantenha o método público para refresh
     fun refresh() {
         loadTrack()
     }
@@ -62,3 +64,4 @@ data class TrackDetailUiState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
+

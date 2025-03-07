@@ -24,7 +24,8 @@ class ArtistsViewModel @Inject constructor(
         loadArtists()
     }
 
-    fun loadArtists() {
+    // Alterado para private
+    private fun loadArtists() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
@@ -46,6 +47,11 @@ class ArtistsViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    // Novo método público para refresh
+    fun refresh() {
+        loadArtists()
     }
 
     fun searchArtists(query: String) {

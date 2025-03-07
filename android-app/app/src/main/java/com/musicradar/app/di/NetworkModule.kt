@@ -47,7 +47,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080/api/") // Endereço do emulador para localhost
+            .baseUrl("http://192.168.3.15:8080/api/") // Endereço do emulador para localhost
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()

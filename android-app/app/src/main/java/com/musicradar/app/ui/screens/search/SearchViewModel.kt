@@ -26,21 +26,14 @@ class SearchViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
+    // Este método precisa ser público já que é chamado diretamente pela UI
     fun search(query: String) {
         if (query.isEmpty()) {
-            _uiState.update {
-                it.copy(
-                    artists = emptyList(),
-                    albums = emptyList(),
-                    tracks = emptyList(),
-                    isLoading = false,
-                    error = null
-                )
-            }
+            clearSearchResults()
             return
         }
 
-        _uiState.update { it.copy(isLoading = true, error = null) }
+        _uiState.update { it.copy(isLoading = true, query = query, error = null) }
 
         viewModelScope.launch {
             try {
@@ -73,9 +66,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun clearSearch() {
+    // Método atualizado para ser privado
+    private fun clearSearchResults() {
         _uiState.update {
             it.copy(
+                query = "",
                 artists = emptyList(),
                 albums = emptyList(),
                 tracks = emptyList(),
@@ -83,6 +78,11 @@ class SearchViewModel @Inject constructor(
                 error = null
             )
         }
+    }
+
+    // Método público para limpar a busca
+    fun clearSearch() {
+        clearSearchResults()
     }
 }
 

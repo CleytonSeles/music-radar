@@ -31,6 +31,11 @@ class ArtistDetailViewModel @Inject constructor(
     val uiState: StateFlow<ArtistDetailUiState> = _uiState.asStateFlow()
 
     init {
+        loadArtistData()
+    }
+
+    // Novo método privado que centraliza todas as chamadas de carregamento
+    private fun loadArtistData() {
         loadArtist()
         loadArtistAlbums()
         loadArtistTracks()
@@ -108,10 +113,9 @@ class ArtistDetailViewModel @Inject constructor(
         }
     }
 
+    // Método público para refresh mantido
     fun refresh() {
-        loadArtist()
-        loadArtistAlbums()
-        loadArtistTracks()
+        loadArtistData()
     }
 }
 
@@ -126,3 +130,4 @@ data class ArtistDetailUiState(
     val albumsError: String? = null,
     val tracksError: String? = null
 )
+

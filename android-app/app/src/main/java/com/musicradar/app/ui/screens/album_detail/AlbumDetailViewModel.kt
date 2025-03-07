@@ -28,6 +28,11 @@ class AlbumDetailViewModel @Inject constructor(
     val uiState: StateFlow<AlbumDetailUiState> = _uiState.asStateFlow()
 
     init {
+        loadAlbumData()
+    }
+
+    // Novo método privado que centraliza todas as chamadas de carregamento
+    private fun loadAlbumData() {
         loadAlbum()
         loadAlbumTracks()
     }
@@ -80,9 +85,9 @@ class AlbumDetailViewModel @Inject constructor(
         }
     }
 
+    // Método público para refresh atualizado para usar o método central
     fun refresh() {
-        loadAlbum()
-        loadAlbumTracks()
+        loadAlbumData()
     }
 }
 
@@ -94,3 +99,4 @@ data class AlbumDetailUiState(
     val albumError: String? = null,
     val tracksError: String? = null
 )
+
