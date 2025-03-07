@@ -25,6 +25,9 @@ object NetworkModule {
     fun provideGson(): Gson {
         return GsonBuilder()
             .setLenient()
+            // Configuração para ignorar campos desconhecidos no JSON
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            // Configuração para permitir que o Gson ignore campos extras
             .create()
     }
 
@@ -71,4 +74,5 @@ object NetworkModule {
         return retrofit.create(TrackApi::class.java)
     }
 }
+
 
