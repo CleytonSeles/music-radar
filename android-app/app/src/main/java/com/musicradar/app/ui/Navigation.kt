@@ -1,6 +1,7 @@
 package com.musicradar.app.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,26 +16,33 @@ import com.musicradar.app.ui.screens.search.SearchScreen
 import com.musicradar.app.ui.screens.track_detail.TrackDetailScreen
 
 sealed class Screen(val route: String) {
-    object Home : Screen("com/musicradar/app/ui/screens/home")
-    object Artists : Screen("artists")
-    object Albums : Screen("albums")
-    object Search : Screen("search")
-    object ArtistDetail : Screen("artist/{artistId}") {
+    data object Home : Screen("home")
+    data object Artists : Screen("artists")
+    data object Albums : Screen("albums")
+    data object Search : Screen("search")
+
+    data object ArtistDetail : Screen("artist/{artistId}") {
         fun createRoute(artistId: Long) = "artist/$artistId"
     }
-    object AlbumDetail : Screen("album/{albumId}") {
+
+    data object AlbumDetail : Screen("album/{albumId}") {
         fun createRoute(albumId: Long) = "album/$albumId"
     }
-    object TrackDetail : Screen("track/{trackId}") {
+
+    data object TrackDetail : Screen("track/{trackId}") {
         fun createRoute(trackId: Long) = "track/$trackId"
     }
 }
 
 @Composable
-fun MusicRadarNavHost(navController: NavHostController) {
+fun MusicRadarNavHost(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Home.route,
+        modifier = modifier
     ) {
         composable(Screen.Home.route) {
             HomeScreen(navController = navController)
@@ -86,3 +94,5 @@ fun MusicRadarNavHost(navController: NavHostController) {
         }
     }
 }
+
+
