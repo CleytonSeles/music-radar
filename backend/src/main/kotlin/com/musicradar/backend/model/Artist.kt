@@ -1,39 +1,36 @@
 package com.musicradar.backend.model
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
-import java.time.LocalDateTime
 
 @Entity
-@Table(name = "artists")
-data class Artist(
+class Artist(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
     
-    @Column(nullable = false)
-    var name: String,
-    
-    @Column(columnDefinition = "TEXT")
+    var name: String? = null,
     var bio: String? = null,
-    
-    @Column
     var imageUrl: String? = null,
-    
-    @Column
     var genres: String? = null,
-    
-    @Column
     var popularity: Int? = null,
     
-    @OneToMany(mappedBy = "artist", cascade = [CascadeType.ALL], orphanRemoval = true)
+    // Use @JsonManagedReference no lado "um" da relação um-para-muitos
+    @JsonManagedReference
+    @OneToMany(mappedBy = "artist", cascade = [CascadeType.ALL])
     var albums: MutableList<Album> = mutableListOf(),
     
-    @OneToMany(mappedBy = "artist", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var tracks: MutableList<Track> = mutableListOf(),
-    
-    @Column(name = "created_at")
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    
-    @Column(name = "updated_at")
-    var updatedAt: LocalDateTime = LocalDateTime.now()
-)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "artist", cascade = [CascadeType.ALL])
+    var tracks: MutableList<Track> = mutableListOf()
+) {
+    // Constructor sem argumentos exigido pelo JPA
+    constructor() : this(
+        id = null,
+        name = null,
+        bio = null,
+        imageUrl = null,
+        genres = null,
+        popularity = null
+    )
+}

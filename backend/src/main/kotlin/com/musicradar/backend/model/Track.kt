@@ -1,41 +1,32 @@
 package com.musicradar.backend.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
-import java.time.LocalDateTime
 
 @Entity
-@Table(name = "tracks")
-data class Track(
+class Track(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
     
-    @Column(nullable = false)
-    var title: String,
+    var title: String? = null,
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    // Use @JsonBackReference no lado "muitos" das relações muitos-para-um
+    @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "album_id")
     var album: Album? = null,
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "artist_id", nullable = false)
-    var artist: Artist,
-    
-    @Column
-    var durationInSeconds: Int? = null,
-    
-    @Column
-    var trackNumber: Int? = null,
-    
-    @Column
-    var genre: String? = null,
-    
-    @Column
-    var spotifyUrl: String? = null,
-    
-    @Column(name = "created_at")
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    
-    @Column(name = "updated_at")
-    var updatedAt: LocalDateTime = LocalDateTime.now()
-)
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
+    var artist: Artist? = null
+) {
+    // Constructor sem argumentos exigido pelo JPA
+    constructor() : this(
+        id = null,
+        title = null,
+        album = null,
+        artist = null
+    )
+}
